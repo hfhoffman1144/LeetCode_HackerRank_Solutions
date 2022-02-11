@@ -1,0 +1,11 @@
+SELECT T1.Department, T2.name as Employee, T2.salary as Salary
+FROM
+(SELECT D.name AS Department, E.id as Eid,
+ MAX(E.salary) OVER(PARTITION BY D.name) AS Salary
+FROM Employee E
+INNER JOIN Department D
+    ON  E.departmentId = D.id) T1
+    
+INNER JOIN Employee T2
+ON T1.Eid = T2.id
+WHERE T1.Salary = T2.Salary
